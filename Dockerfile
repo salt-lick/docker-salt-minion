@@ -1,18 +1,7 @@
-FROM ubuntu:14.04
-MAINTAINER Nolan Nichols <nolan.nichols@gmail.com>
+FROM centos:latest
 
-RUN \
-  apt-get update && \
-  apt-get upgrade -y
-
-RUN apt-get install -y curl
-
-RUN \
-  curl -L https://bootstrap.saltstack.com/develop | \
-  sudo sh -s -- -X -d stable
-
-VOLUME ["/etc/salt/pki", "/var/cache/salt", "/var/logs/salt", "/etc/salt/minion.d", "/srv/salt"]
+RUN yum -y install https://repo.saltstack.com/yum/redhat/salt-repo-latest-1.el7.noarch.rpm
+RUN yum -y clean expire-cache
+RUN yum -y install salt-minion curl
 
 EXPOSE 4505 4506
-
-ENTRYPOINT ["/usr/bin/salt-minion"]
